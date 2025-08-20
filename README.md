@@ -12,3 +12,5 @@ Am Ende soll eine kleine Webanwendung entstehen (Workout Tracker und später ein
 ## Starten
 ```bash
 uvicorn app.main:app --reload
+```
+
