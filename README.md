@@ -13,4 +13,6 @@ Am Ende soll eine kleine Webanwendung entstehen (Workout Tracker und später ein
 ```bash
 uvicorn app.main:app --reload
 ```
-
+```bash
+uvicorn app.main:app --reload --port 8012
+```
