@@ -36,3 +36,10 @@ workouts = [{
 @app.get("/workouts")
 def get_workouts():
     return workouts
+
+@app.get("/workouts/{id}")
+def get_workout(id: int):
+    for workout in workouts:
+        if workout["id"] == id:
+            return workout
+    return {"message": "Workout not found"}
