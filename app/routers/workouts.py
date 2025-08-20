@@ -1,6 +1,9 @@
 from fastapi import APIRouter
 
-router = APIRouter(prefix="/workouts", tags=["workouts"])
+#Prefix -> spart  das hängt den Pfad vorne dran (/workouts)
+#Tags -> Dann bekommen alle Endpunkte dieses Routers in den Docs eine Überschrift „workouts“.
+#        Das ist nur Doku, hat keinen Einfluss auf den eigentlichen Code oder die URL.
+router = APIRouter(prefix="/workouts", tags=["Workouts"])
 
 # Beispiel Daten
 WORKOUTS = [
