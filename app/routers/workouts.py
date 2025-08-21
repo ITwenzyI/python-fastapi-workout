@@ -1,18 +1,18 @@
 from fastapi import APIRouter
 from fastapi import HTTPException
 from pydantic import BaseModel, Field
-
+from datetime import date
 
 
 class Workout(BaseModel):
     id: int
-    date: str
+    date: date
     title: str
     duration_min: int
     notes: str | None = None # Feld ist nicht Pflicht
 
 class WorkoutCreate(BaseModel): # Ohne ID weil wir die vergeben nicht Client
-    date: str
+    date: date
     title: str = Field(min_length=1)
     duration_min: int = Field(gt=0) # gt= greater than 0
     notes: str | None = None # Optional
