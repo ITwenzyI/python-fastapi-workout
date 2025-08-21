@@ -59,6 +59,8 @@ def list_workouts(min_duration: int | None = None, workout_type: WorkoutType | N
         result = [w for w in result if w["duration_min"] >= min_duration]
     if workout_type is not None:
         result = [w for w in result if w["type"] == workout_type]
+    if len(result) == 0:
+        raise HTTPException(status_code=404, detail="Workout not found")
     return result
 
 @router.post("", response_model=Workout, status_code=201)
@@ -68,6 +70,9 @@ def create_workout(payload: WorkoutCreate): # payload ist ein Objekt von Workout
     else:
         new_id = 1
     new_workout = {"id": new_id, **payload.model_dump()}
+    for w in WORKOUTS:
+        if w["type"] == new_workout["type"] and w["date"] == new_workout["date"]:
+            raise HTTPException(status_code=409, detail="Workout already exists")
     WORKOUTS.append(new_workout)
     return new_workout
 
