@@ -35,6 +35,8 @@ def list_workouts(min_duration: int | None = None, title_contains: str | None = 
     if min_duration is not None:
         result = [w for w in result if w["duration_min"] >= min_duration]
     if title_contains:
+        # .casefold() macht alles klein + berücksichtigt Sonderfälle z.B ß -> ss
+        # .strip() Entfernt Leerzeichen am Anfang und Ende des Strings
         q = title_contains.strip().casefold()
         result = [w for w in result if q in w["title"].casefold()]
     return result
@@ -45,7 +47,7 @@ def create_workout(payload: WorkoutCreate): # payload ist ein Objekt von Workout
         new_id = max(w["id"] for w in WORKOUTS) + 1
     else:
         new_id = 1
-    new_workout = {"id": new_id, **payload.dict()}
+    new_workout = {"id": new_id, **payload.model_dump()}
     WORKOUTS.append(new_workout)
     return new_workout
 
