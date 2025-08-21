@@ -2,21 +2,21 @@ from fastapi import APIRouter
 from fastapi import HTTPException
 from pydantic import BaseModel, Field, field_validator
 from datetime import date
+from enum import Enum
 
+class WorkoutType(str, Enum):
+    PUSH = "Push Day"
+    PULL = "Pull Day"
+    LEGS = "Legs Day"
+    CARDIO = "Cardio Day"
 
 class Workout(BaseModel):
     id: int = Field(gt=0,)
     date: date
-    title: str = Field(min_length=1)
+    type: WorkoutType
     duration_min: int = Field(gt=0, le=180) # gt= greater than 0 le= max. 180
     notes: str | None = Field(default=None, max_length=200) # Feld ist nicht Pflicht
 
-    @field_validator('title')
-    def title_validator(cls, v: str) -> str:
-        cleaned = v.strip()
-        if len(cleaned) == 0:
-            raise ValueError('title cannot be empty')
-        return cleaned
     @field_validator('notes')
     def notes_validator(cls, v: str | None) -> str | None:
         if v is None:
@@ -29,16 +29,10 @@ class Workout(BaseModel):
 
 class WorkoutCreate(BaseModel): # Ohne ID weil wir die vergeben nicht Client
     date: date
-    title: str = Field(min_length=1)
+    type: WorkoutType
     duration_min: int = Field(gt=0, le=180) # gt= greater than 0 le= max. 180
     notes: str | None = Field(default=None, max_length=200) # Feld ist nicht Pflicht
 
-    @field_validator('title')
-    def title_validator(cls, v: str) -> str:
-        cleaned = v.strip()
-        if len(cleaned) == 0:
-            raise ValueError('title cannot be empty')
-        return cleaned
     @field_validator('notes')
     def notes_validator(cls, v: str | None) -> str | None:
         if v is None:
@@ -53,21 +47,18 @@ router = APIRouter(prefix="/workouts", tags=["Workouts"])
 
 # Beispiel Daten
 WORKOUTS = [
-    {"id": 1, "date": "2025-08-20", "title": "Push Day", "duration_min": 45, "notes": "leicht gesteigert"},
-    {"id": 2, "date": "2025-08-21", "title": "Pull Day", "duration_min": 60, "notes": "stark gesteigert"},
-    {"id": 3, "date": "2025-08-23", "title": "Leg Day", "duration_min": 70},
+    {"id": 1, "date": "2025-08-20", "type": "Push Day", "duration_min": 45, "notes": "leicht gesteigert"},
+    {"id": 2, "date": "2025-08-21", "type": "Pull Day", "duration_min": 60, "notes": "stark gesteigert"},
+    {"id": 3, "date": "2025-08-23", "type": "Legs Day", "duration_min": 70},
 ]
 
 @router.get("", response_model=list[Workout])
-def list_workouts(min_duration: int | None = None, title_contains: str | None = None):
+def list_workouts(min_duration: int | None = None, workout_type: WorkoutType | None = None):
     result = list(WORKOUTS)
     if min_duration is not None:
         result = [w for w in result if w["duration_min"] >= min_duration]
-    if title_contains:
-        # .casefold() macht alles klein + berücksichtigt Sonderfälle z.B ß -> ss
-        # .strip() Entfernt Leerzeichen am Anfang und Ende des Strings
-        q = title_contains.strip().casefold()
-        result = [w for w in result if q in w["title"].casefold()]
+    if workout_type is not None:
+        result = [w for w in result if w["type"] == workout_type]
     return result
 
 @router.post("", response_model=Workout, status_code=201)
