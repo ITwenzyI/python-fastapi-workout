@@ -1,21 +1,50 @@
 from fastapi import APIRouter
 from fastapi import HTTPException
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, field_validator
 from datetime import date
 
 
 class Workout(BaseModel):
-    id: int
+    id: int = Field(gt=0,)
     date: date
-    title: str
-    duration_min: int
-    notes: str | None = None # Feld ist nicht Pflicht
+    title: str = Field(min_length=1)
+    duration_min: int = Field(gt=0, le=180) # gt= greater than 0 le= max. 180
+    notes: str | None = Field(default=None, max_length=200) # Feld ist nicht Pflicht
+
+    @field_validator('title')
+    def title_validator(cls, v: str) -> str:
+        cleaned = v.strip()
+        if len(cleaned) == 0:
+            raise ValueError('title cannot be empty')
+        return cleaned
+    @field_validator('notes')
+    def notes_validator(cls, v: str | None) -> str | None:
+        if v is None:
+            return None
+        cleaned = v.strip()
+        return cleaned if cleaned else None
+
+
+
 
 class WorkoutCreate(BaseModel): # Ohne ID weil wir die vergeben nicht Client
     date: date
     title: str = Field(min_length=1)
-    duration_min: int = Field(gt=0) # gt= greater than 0
-    notes: str | None = None # Optional
+    duration_min: int = Field(gt=0, le=180) # gt= greater than 0 le= max. 180
+    notes: str | None = Field(default=None, max_length=200) # Feld ist nicht Pflicht
+
+    @field_validator('title')
+    def title_validator(cls, v: str) -> str:
+        cleaned = v.strip()
+        if len(cleaned) == 0:
+            raise ValueError('title cannot be empty')
+        return cleaned
+    @field_validator('notes')
+    def notes_validator(cls, v: str | None) -> str | None:
+        if v is None:
+            return None
+        cleaned = v.strip()
+        return cleaned if cleaned else None
 
 #Prefix -> spart  das hängt den Pfad vorne dran (/workouts)
 #Tags -> Dann bekommen alle Endpunkte dieses Routers in den Docs eine Überschrift „workouts“.
