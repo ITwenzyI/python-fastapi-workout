@@ -16,3 +16,10 @@ uvicorn app.main:app --reload
 ```bash
 uvicorn app.main:app --reload --port 8012
 ```
+
+### Git-Commits Erklärung
+feat: wenn eine neue Funktionen einbaut wurde
+
+fix: wenn ein Bug oder eine Warnung behoben wurde
+
+docs: für Doku wie README oder Notes
