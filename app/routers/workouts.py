@@ -1,6 +1,7 @@
 from fastapi import APIRouter
-from pydantic import BaseModel
 from fastapi import HTTPException
+from pydantic import BaseModel, Field
+
 
 
 class Workout(BaseModel):
@@ -12,9 +13,9 @@ class Workout(BaseModel):
 
 class WorkoutCreate(BaseModel): # Ohne ID weil wir die vergeben nicht Client
     date: str
-    title: str
-    duration_min: int
-    notes: str | None = None
+    title: str = Field(min_length=1)
+    duration_min: int = Field(gt=0) # gt= greater than 0
+    notes: str | None = None # Optional
 
 #Prefix -> spart  das hängt den Pfad vorne dran (/workouts)
 #Tags -> Dann bekommen alle Endpunkte dieses Routers in den Docs eine Überschrift „workouts“.
