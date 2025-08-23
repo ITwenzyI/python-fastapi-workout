@@ -55,6 +55,8 @@ WORKOUTS = [
 @router.get("", response_model=list[Workout])
 def list_workouts(min_duration: int | None = None, workout_type: WorkoutType | None = None):
     result = list(WORKOUTS)
+    if min_duration is not None and workout_type is not None:
+        result = [w for w in result if w["type"] == workout_type and w["duration_min"] >= min_duration]
     if min_duration is not None:
         result = [w for w in result if w["duration_min"] >= min_duration]
     if workout_type is not None:
