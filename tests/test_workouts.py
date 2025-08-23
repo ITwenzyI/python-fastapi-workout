@@ -1,7 +1,6 @@
-from fastapi import FastAPI
-from pydantic import BaseModel, Field
 from fastapi.testclient import TestClient
 from app.main import app
+# from app.models.workout import WorkoutCreate, Workout, WorkoutType
 
 client = TestClient(app)
 

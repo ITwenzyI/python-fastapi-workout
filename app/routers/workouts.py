@@ -1,44 +1,9 @@
 from fastapi import APIRouter
 from fastapi import HTTPException
-from pydantic import BaseModel, Field, field_validator
-from datetime import date
-from enum import Enum
-
-class WorkoutType(str, Enum):
-    PUSH = "Push Day"
-    PULL = "Pull Day"
-    LEGS = "Legs Day"
-    CARDIO = "Cardio Day"
-
-class Workout(BaseModel):
-    id: int = Field(gt=0,)
-    date: date
-    type: WorkoutType
-    duration_min: int = Field(gt=0, le=180) # gt= greater than 0 le= max. 180
-    notes: str | None = Field(default=None, max_length=200) # Feld ist nicht Pflicht
-
-    @field_validator('notes')
-    def notes_validator(cls, v: str | None) -> str | None:
-        if v is None:
-            return None
-        cleaned = v.strip()
-        return cleaned if cleaned else None
-
-
-
-
-class WorkoutCreate(BaseModel): # Ohne ID weil wir die vergeben nicht Client
-    date: date
-    type: WorkoutType
-    duration_min: int = Field(gt=0, le=180) # gt= greater than 0 le= max. 180
-    notes: str | None = Field(default=None, max_length=200) # Feld ist nicht Pflicht
-
-    @field_validator('notes')
-    def notes_validator(cls, v: str | None) -> str | None:
-        if v is None:
-            return None
-        cleaned = v.strip()
-        return cleaned if cleaned else None
+# from pydantic import BaseModel, Field, field_validator
+# from datetime import date
+# from enum import Enum
+from app.models.workout import WorkoutCreate, Workout, WorkoutType
 
 #Prefix -> spart  das hängt den Pfad vorne dran (/workouts)
 #Tags -> Dann bekommen alle Endpunkte dieses Routers in den Docs eine Überschrift „workouts“.
