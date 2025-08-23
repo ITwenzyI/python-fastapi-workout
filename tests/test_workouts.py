@@ -22,3 +22,8 @@ def test_create_workout_duplicate_error():
     assert resp1.status_code == 201
     resp2 = client.post("/workouts", json={"date": "2025-08-29", "type": "Legs Day", "duration_min": 60})
     assert resp2.status_code == 409
+
+def test_get_workout_not_found():
+    resp = client.get("/workouts/999")
+    assert resp.status_code == 404
+    assert resp.json()["detail"] == "Workout not found"
