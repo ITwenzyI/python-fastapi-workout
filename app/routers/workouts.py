@@ -14,9 +14,9 @@ router = APIRouter()
 
 # Beispiel Daten
 WORKOUTS = [
-    {"id": 1, "date": "2025-08-20", "type": "Push Day", "duration_min": 45, "notes": "leicht gesteigert", "user_id": 1},
-    {"id": 2, "date": "2025-08-21", "type": "Pull Day", "duration_min": 60, "notes": "stark gesteigert", "user_id": 1},
-    {"id": 3, "date": "2025-08-23", "type": "Legs Day", "duration_min": 70, "user_id": 2},
+    {"id": 1, "date": "2025-08-20", "type": "push", "duration_min": 45, "notes": "leicht gesteigert", "user_id": 1},
+    {"id": 2, "date": "2025-08-21", "type": "pull", "duration_min": 60, "notes": "stark gesteigert", "user_id": 1},
+    {"id": 3, "date": "2025-08-23", "type": "legs", "duration_min": 70, "user_id": 2},
 ]
 
 @router.get("/", response_model=list[Workout])

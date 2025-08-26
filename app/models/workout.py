@@ -3,13 +3,13 @@ from enum import Enum
 from datetime import date
 
 class WorkoutType(str, Enum):
-    PUSH = "Push Day"
-    PULL = "Pull Day"
-    LEGS = "Legs Day"
-    CARDIO = "Cardio Day"
+    PUSH = "push"
+    PULL = "pull"
+    LEGS = "legs"
+    CARDIO = "cardio"
 
 class Workout(BaseModel):
-    id: int = Field(gt=0,)
+    id: int = Field(gt=0)
     date: date
     type: WorkoutType
     duration_min: int = Field(gt=0, le=180) # gt= greater than 0 le= max. 180
