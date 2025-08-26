@@ -5,7 +5,7 @@ from app.main import app
 client = TestClient(app)
 
 def test_create_workout_ok():
-    resp = client.post("/workouts", json={"date": "2025-08-24", "type": "Legs Day", "duration_min": 80})
+    resp = client.post("/workouts", json={"date": "2025-08-24", "type": "legs", "duration_min": 80})
     assert resp.status_code == 201
     data = resp.json()
     assert data["date"] == "2025-08-24"
