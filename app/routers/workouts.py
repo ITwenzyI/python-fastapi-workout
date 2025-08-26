@@ -17,7 +17,7 @@ WORKOUTS = [
     {"id": 3, "date": "2025-08-23", "type": "Legs Day", "duration_min": 70},
 ]
 
-@router.get("", response_model=list[Workout])
+@router.get("/", response_model=list[Workout])
 def list_workouts(min_duration: int | None = None, workout_type: WorkoutType | None = None):
     result = list(WORKOUTS)
     if min_duration is not None and workout_type is not None:
