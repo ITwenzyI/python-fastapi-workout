@@ -10,4 +10,4 @@ def read_root():
     return {"status": "ok"}
 
 app.include_router(greetings_router)
-app.include_router(workouts_router)
+app.include_router(workouts_router, prefix="/workouts", tags=["workouts"])

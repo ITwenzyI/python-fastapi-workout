@@ -8,7 +8,7 @@ from app.models.workout import WorkoutCreate, Workout, WorkoutType
 #Prefix -> spart  das hängt den Pfad vorne dran (/workouts)
 #Tags -> Dann bekommen alle Endpunkte dieses Routers in den Docs eine Überschrift „workouts“.
 #        Das ist nur Doku, hat keinen Einfluss auf den eigentlichen Code oder die URL.
-router = APIRouter(prefix="/workouts", tags=["Workouts"])
+router = APIRouter()
 
 # Beispiel Daten
 WORKOUTS = [
@@ -48,7 +48,5 @@ def get_workout(id: int):
     for w in WORKOUTS:
         if w["id"] == id:
             return w
-        else:
-            continue
     raise HTTPException(status_code=404, detail="Workout not found")
 
