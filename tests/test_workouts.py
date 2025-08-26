@@ -11,6 +11,7 @@ def test_create_workout_ok():
     assert data["date"] == "2025-08-24"
     assert data["type"] == "Legs Day"
     assert data["duration_min"] == 80
+    assert data["user_id"] == 1
 
 def test_create_workout_validation_error():
     resp = client.post("/workouts", json={"date": "2025-08-24", "type": "Legs Day", "duration_min": 0})
